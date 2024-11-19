@@ -1,0 +1,57 @@
+version: "27.3.1"
+
+services: 
+  kzcv-coins:
+    build: ./
+    ports:
+      - 8002:8002
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_USER: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD
+      DB_DB: $DB_NAME
+    secrets:
+      - db_username
+      - db_name
+      - db_password
+    networks: 
+      - kzcv-network
+      - default
+
+  db:
+    image: postgres:latest
+    healthcheck:
+      test: pg_isready -U $DB_USERNAME -d $DB_NAME
+      interval: 3s
+      retries: 15
+      start_period: 5s
+    environment:
+      POSTGRES_USER: $DB_USERNAME
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    volumes:
+      - ./data:/var/lib/postgresql/data/ #./.database/postgres/data:/var/lib/postgersql/data
+    ports:
+      - 5002:5432
+    secrets:
+      - db_username
+      - db_name
+      - db_password
+    networks: 
+      - default
+
+name: kzcv-coins-image
+
+networks:
+  kzcv-network:
+    external: true
+
+secrets:
+  db_username:
+    environment: DB_USERNAME
+  db_password:
+    environment: DB_PASSWORD
+  db_name:
+    environment: DB_NAME

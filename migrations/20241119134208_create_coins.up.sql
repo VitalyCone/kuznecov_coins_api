@@ -1,0 +1,6 @@
+CREATE TABLE user_coins(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    coins BIGINT NOT NULL,
+    last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
