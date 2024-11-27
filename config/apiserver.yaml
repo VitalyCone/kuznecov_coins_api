@@ -1,0 +1,4 @@
+api_addr: ":8002"
+database_url: "host=localhost port=5432 user=postgres dbname=kuznecov_coins password=admin sslmode=disable"
+database_docker_url: "host=db port=5432 user=admin dbname=kuznecov_coins password=admin sslmode=disable"
+    
