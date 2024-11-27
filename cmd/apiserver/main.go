@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app"
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app/apiserver"
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app/store"
+	"github.com/VitalyCone/account/internal/app"
+	"github.com/VitalyCone/account/internal/app/apiserver"
+	"github.com/VitalyCone/account/internal/app/store"
 	"gopkg.in/yaml.v3"
 )
 
@@ -28,6 +28,12 @@ type configData struct {
 	DbDockerUrl string `yaml:"database_docker_url"`
 }
 
+// @title Account API
+// @version 1.0
+// @description API for managing users
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name token
 func main() {
 	var configStore *store.Config
 	var configServer *apiserver.Config

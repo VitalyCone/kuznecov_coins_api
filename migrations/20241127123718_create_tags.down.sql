@@ -1,0 +1,3 @@
+
+DROP INDEX IF EXISTS idx_tags_id;
+DROP TABLE IF EXISTS tags;

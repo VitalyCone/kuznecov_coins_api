@@ -9,7 +9,7 @@ import (
 type Store struct {
 	config                *Config
 	db                    *sql.DB
-	coinRepository	*CoinRepository
+	usersRepository	*UsersRepository
 }
 
 func NewStore(config *Config) *Store {
@@ -40,14 +40,14 @@ func (s *Store) Close() {
 	s.db.Close()
 }
 
-func (s *Store) Coin() *CoinRepository {
-	if s.coinRepository != nil {
-		return s.coinRepository
+func (s *Store) User() *UsersRepository {
+	if s.usersRepository != nil {
+		return s.usersRepository
 	}
 
-	s.coinRepository = &CoinRepository{
+	s.usersRepository = &UsersRepository{
 		store: s,
 	}
 
-	return s.coinRepository
+	return s.usersRepository
 }

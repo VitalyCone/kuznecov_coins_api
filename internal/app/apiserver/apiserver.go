@@ -1,17 +1,19 @@
 package apiserver
 
 import (
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app/apiserver/endpoints"
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app/store"
+	"log"
+
+	"github.com/VitalyCone/account/docs"
+	"github.com/VitalyCone/account/internal/app/apiserver/endpoints"
+	"github.com/VitalyCone/account/internal/app/store"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/VitalyCone/kuznecov_coins_api/docs"
-	// _ "github.com/swaggo/swag/example/basic/docs"
+	//_ "github.com/swaggo/swag/example/basic/docs"
 )
 
 var (
-	mainPath string = "/usercoins"
+	mainPath string = "/main"
 )
 
 type APIServer struct {
@@ -36,10 +38,12 @@ func (s *APIServer) Start() error {
 		return err
 	}
 
-	s.router.MaxMultipartMemory = 8 << 20
+	log.Printf("SWAGGER : http://localhost%s/swagger/index.html\n", s.config.ApiAddr)
 
 	return s.router.Run(s.config.ApiAddr)
 }
+
+
 
 func (s *APIServer) configureEndpoints() {
 	endpoint := endpoints.NewEndpoints(s.store)
@@ -48,22 +52,12 @@ func (s *APIServer) configureEndpoints() {
 	docs.SwaggerInfo.BasePath = mainPath
 	path := s.router.Group(mainPath)
 	{
-		path.GET("/user", endpoint.GetCoin)
-		path.PUT("/user", endpoint.PutCoin)
-		path.POST("/user", endpoint.PostNewUser)
+		path.POST("/account/register", endpoint.RegisterUser)
+		path.POST("/account/login", endpoint.LoginUser)
+		path.GET("/account/info", endpoint.GetUserInfo)
+		path.PUT("/account/info", endpoint.PutUserInfo)
+		path.DELETE("/account/delete", endpoint.DeleteUserInfo)
 	}
-	// path.GET("/publication/:id", endpoint.GetPublication) 
-	// path.GET("/news", endpoint.GetNews) 
-	// path.POST("/publication", endpoint.PostPublication) 
-	// path.DELETE("/publication/:id", endpoint.DeletePublication)
-	// {
-	// 	path.GET("/news") //получение новостей определенного пользователя
-
-	// 	path.POST("/post") //создание поста
-	// 	path.DELETE("/post/:id") //удаление поста
-	// 	path.PUT("/post/:id") //изменение поста по id
-	// }
-
 
 	s.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

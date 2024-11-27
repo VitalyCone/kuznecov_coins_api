@@ -1,7 +1,7 @@
 package endpoints
 
 import (
-	"github.com/VitalyCone/kuznecov_coins_api/internal/app/store"
+	"github.com/VitalyCone/account/internal/app/store"
 	"github.com/gin-gonic/gin"
 )
 

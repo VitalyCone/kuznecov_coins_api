@@ -1,20 +1,152 @@
+definitions:
+  dtos.CreateUserDto:
+    properties:
+      first_name:
+        maxLength: 50
+        type: string
+      password:
+        maxLength: 32
+        minLength: 3
+        type: string
+      second_name:
+        maxLength: 50
+        type: string
+      username:
+        maxLength: 32
+        minLength: 3
+        type: string
+    required:
+    - first_name
+    - password
+    - second_name
+    - username
+    type: object
+  dtos.ModifyUserDto:
+    properties:
+      avatar:
+        type: string
+      first_name:
+        maxLength: 50
+        type: string
+      new_password:
+        maxLength: 32
+        minLength: 3
+        type: string
+      old_password:
+        maxLength: 32
+        minLength: 3
+        type: string
+      second_name:
+        maxLength: 50
+        type: string
+      username:
+        maxLength: 32
+        minLength: 3
+        type: string
+    required:
+    - first_name
+    - new_password
+    - old_password
+    - second_name
+    - username
+    type: object
+  dtos.UserDto:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
+  description: API for managing users
+  title: Account API
+  version: "1.0"
 paths:
-  /coins:
-    get:
+  /account/delete:
+    delete:
       consumes:
       - application/json
-      description: Get coins for user by token
-      parameters:
-      - description: username
-        in: header
-        name: username
-        type: string
+      description: Delete user by token data
       produces:
       - application/json
       responses: {}
-      summary: Get coins for user
+      security:
+      - ApiKeyAuth: []
+      summary: Delete user by token data
       tags:
-      - Coins
+      - Users
+  /account/info:
+    get:
+      consumes:
+      - application/json
+      description: Get user data by token
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get user data by token
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Get user token data
+      parameters:
+      - description: User dto for modify user
+        in: body
+        name: ModifyUserDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ModifyUserDto'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get user token data
+      tags:
+      - Users
+  /account/login:
+    post:
+      consumes:
+      - application/json
+      description: login in api
+      parameters:
+      - description: User  dto for login in
+        in: body
+        name: userDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UserDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login for user
+      tags:
+      - Authorization
+  /account/register:
+    post:
+      consumes:
+      - application/json
+      description: Register in api
+      parameters:
+      - description: Create user dto for register in
+        in: body
+        name: createUserDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateUserDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register for user
+      tags:
+      - Authorization
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: token
+    type: apiKey
 swagger: "2.0"
