@@ -13,6 +13,7 @@ import (
 var (
 	mainPath string = "/usercoins"
 )
+	
 
 type APIServer struct {
 	config *Config
